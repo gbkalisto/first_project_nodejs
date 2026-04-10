@@ -1,16 +1,18 @@
 const { render } = require('ejs');
-const productModel = require('../models/product');
+const productModel = require('../../models/product');
+const Category = require('../../models/category');
 const path = require('path');
 const fs = require('fs');
 
 
 exports.getAllProducts = async (req, res) => {
     let products = await productModel.find();
-    res.render('products/index', { products });
+    res.render('admin/products/index', { products });
 }
 
 exports.createProducts = async (req, res) => {
-    res.render('products/create');
+    let categories = await Category.find();
+    res.render('admin/products/create', { categories });
 }
 
 exports.storeProducts = async (req, res) => {
@@ -25,7 +27,7 @@ exports.storeProducts = async (req, res) => {
             image: relativePath
         }
         );
-        res.redirect('/products');
+        res.redirect('/admin/products');
     } catch (err) { // <--- Ensure 'err' is defined here
         console.error("Validation Error:", err.message);
 
@@ -38,7 +40,7 @@ exports.storeProducts = async (req, res) => {
             });
 
             // Return to the form with the errors and previous input
-            return res.render('products/create', {
+            return res.render('admin/products/create', {
                 errors,
                 oldData: req.body
             });
@@ -52,7 +54,8 @@ exports.storeProducts = async (req, res) => {
 
 exports.editProducts = async (req, res) => {
     let product = await productModel.findOne({ _id: req.params.id });
-    res.render('products/edit', { product })
+    let categories = await Category.find();
+    res.render('admin/products/edit', { product, categories })
 }
 
 exports.updateProducts = async (req, res) => {
@@ -91,7 +94,7 @@ exports.updateProducts = async (req, res) => {
             image: dbImg // This will be either the old path OR the new path
         });
 
-        res.redirect('/products');
+        res.redirect('/admin/products');
     } catch (error) {
         console.error(error);
         res.status(500).send("Error updating product");
@@ -120,5 +123,5 @@ exports.deleteProducts = async (req, res) => {
     }
 
     await productModel.findByIdAndDelete(req.params.id);
-    res.redirect('/products');
+    res.redirect('/admin/products');
 }

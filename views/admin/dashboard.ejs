@@ -1,0 +1,79 @@
+<!-- include header hear -->
+<%- include('partials/header') %>
+    <main class="main-content">
+        <!-- include breadcrumb here -->
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="#"
+                                class="text-decoration-none text-muted">Console</a>
+                        </li>
+                        <li class="breadcrumb-item small active">Overview</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Dashboard Overview</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-white border bg-white shadow-sm btn-sm px-3 py-2 fw-semibold">
+                    <i class="bi bi-download me-1"></i> Reports
+                </button>
+                <button class="btn btn-primary btn-sm px-3 py-2 fw-semibold shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> New Entry
+                </button>
+            </div>
+        </header>
+
+        <div class="row g-4 mb-5">
+            <div class="col-12 col-md-4">
+                <a href="/admin/users" style="text-decoration: none;">
+                    <div class="card-stat">
+                        <div class="stat-icon"><i class="bi bi-people"></i></div>
+                        <div class="small text-muted fw-medium mb-1">Total Users</div>
+                        <div class="h3 fw-bold mb-0">
+                            <%= stats.users %>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-4">
+                <a href="/admin/products" style="text-decoration: none;">
+                    <div class="card-stat">
+                        <div class="stat-icon"><i class="bi bi-bag-check"></i></div>
+                        <div class="small text-muted fw-medium mb-1">Total Products</div>
+                        <div class="h3 fw-bold mb-0">
+                            <%= stats.products %>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-4">
+                <a href="/admin/categories" style="text-decoration: none;">
+                    <div class="card-stat">
+                        <div class="stat-icon"><i class="bi bi-tags"></i></div>
+                        <div class="small text-muted fw-medium mb-1">Total Categories </div>
+                        <div class="h3 fw-bold mb-0">
+                            <%= stats.categories %>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-4">
+                <a href="/admin/posts" style="text-decoration: none;">
+                    <div class="card-stat">
+                        <div class="stat-icon"><i class="bi bi-substack"></i></div>
+                        <div class="small text-muted fw-medium mb-1">Total Posts </div>
+                        <div class="h3 fw-bold mb-0">
+                            <%= stats.posts %>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- include footer here -->
+    <%- include('partials/footer') %>

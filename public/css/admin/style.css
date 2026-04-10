@@ -1,0 +1,134 @@
+ :root {
+     --brand-dark: #0f172a;
+     --brand-accent: #4f46e5;
+     --text-main: #1e293b;
+     --text-muted: #64748b;
+     --bg-body: #f8fafc;
+     --glass-bg: rgba(15, 23, 42, 0.95);
+ }
+
+ body {
+     font-family: 'Inter', sans-serif;
+     background-color: var(--bg-body);
+     color: var(--text-main);
+     letter-spacing: -0.01em;
+ }
+
+ /* --- NAVIGATION --- */
+ .navbar-custom {
+     background: var(--brand-dark);
+     backdrop-filter: blur(10px);
+     padding: 0.8rem 2rem;
+     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .navbar-brand {
+     font-weight: 700;
+     font-size: 1.25rem;
+     letter-spacing: -0.5px;
+ }
+
+ .nav-item .nav-link {
+     color: #94a3b8 !important;
+     font-size: 0.9rem;
+     font-weight: 500;
+     padding: 0.6rem 1.2rem !important;
+     border-radius: 8px;
+     transition: all 0.2s ease;
+     margin: 0 2px;
+ }
+
+ .nav-item .nav-link:hover {
+     color: #fff !important;
+     background: rgba(255, 255, 255, 0.08);
+ }
+
+ /* Active State logic */
+ .nav-item .nav-link.active {
+     color: #fff !important;
+     background: var(--brand-accent) !important;
+     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+ }
+
+ /* --- DROPDOWN --- */
+ .dropdown-menu {
+     border: 1px solid #e2e8f0;
+     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+     border-radius: 12px;
+     padding: 0.5rem;
+     margin-top: 15px !important;
+ }
+
+ .dropdown-item {
+     border-radius: 6px;
+     padding: 0.6rem 1rem;
+     font-size: 0.85rem;
+     font-weight: 500;
+ }
+
+ .dropdown-item:hover {
+     background-color: #f1f5f9;
+     color: var(--brand-accent);
+ }
+
+ /* --- STAT CARDS --- */
+ .main-content {
+     padding: 40px 20px;
+     max-width: 1300px;
+     margin: 0 auto;
+ }
+
+ .card-stat {
+     background: #fff;
+     border: 1px solid #e2e8f0;
+     border-radius: 16px;
+     padding: 1.5rem;
+     transition: all 0.3s ease;
+ }
+
+ .card-stat:hover {
+     border-color: var(--brand-accent);
+     transform: translateY(-4px);
+     box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.05);
+ }
+
+ .stat-icon {
+     width: 42px;
+     height: 42px;
+     background: #f1f5f9;
+     border-radius: 10px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     color: var(--brand-accent);
+     margin-bottom: 1.2rem;
+ }
+
+ /* --- AVATAR --- */
+ .user-profile-btn {
+     background: rgba(255, 255, 255, 0.05);
+     border: 1px solid rgba(255, 255, 255, 0.1);
+     padding: 4px 12px 4px 6px;
+     border-radius: 50px;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     color: #fff;
+     transition: 0.2s;
+ }
+
+ .user-profile-btn:hover {
+     background: rgba(255, 255, 255, 0.15);
+ }
+
+ .avatar-circle {
+     width: 32px;
+     height: 32px;
+     background: var(--brand-accent);
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-weight: 700;
+     font-size: 0.8rem;
+ }

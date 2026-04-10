@@ -1,0 +1,124 @@
+<%- include('../partials/header') %>
+
+<main class="main-content">
+    <header class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item small"><a href="/admin/dashboard" class="text-decoration-none text-muted">Console</a></li>
+                    <li class="breadcrumb-item small"><a href="/admin/categories" class="text-decoration-none text-muted">Categories</a></li>
+                    <li class="breadcrumb-item small active">Edit Mode</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold tracking-tight">Edit Category</h2>
+        </div>
+        <div>
+            <a href="/admin/categories" class="btn btn-white border bg-white shadow-sm btn-sm px-3 py-2 fw-semibold">
+                <i class="bi bi-arrow-left me-1"></i> Cancel Changes
+            </a>
+        </div>
+    </header>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="card-body p-4 p-md-5">
+                    <form action="/admin/categories/<%= category._id %>/edit?_method=PUT" method="POST" enctype="multipart/form-data">
+                        <div class="row g-4">
+                            
+                            <div class="col-md-7">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label small fw-bold text-muted text-uppercase">Category Name</label>
+                                    <input type="text" 
+                                        class="form-control form-control-lg shadow-none <%= (typeof errors !== 'undefined' && errors.name) ? 'is-invalid' : '' %>" 
+                                        name="name" id="name" placeholder="e.g. Electronics"
+                                        value="<%= category.name %>" required>
+                                    <% if (typeof errors !== 'undefined' && errors.name) { %>
+                                        <div class="invalid-feedback"><%= errors.name %></div>
+                                    <% } %>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="description" class="form-label small fw-bold text-muted text-uppercase">Description</label>
+                                    <textarea class="form-control shadow-none" id="description" name="description" rows="7" 
+                                        placeholder="Update category details..."><%= category.description %></textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-check form-switch custom-switch">
+                                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
+                                            <%= category.is_active ? 'checked' : '' %>>
+                                        <label class="form-check-label fw-semibold ms-2" for="is_active">
+                                            Enable Category Visibility
+                                        </label>
+                                    </div>
+                                    <div class="form-text text-muted x-small ms-5">Disabled categories won't show in the public store navigation.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Update Featured Image</label>
+                                
+                                <div class="image-upload-wrapper border-dashed rounded-4 p-4 text-center bg-light mb-3" style="border: 2px dashed #cbd5e1;">
+                                    
+                                    <div id="preview-container" class="mb-3">
+                                        <img id="imagePreview" 
+                                             src="/<%= category.image ? category.image : 'images/placeholder.png' %>" 
+                                             alt="Current Image" 
+                                             class="img-fluid rounded-3 shadow-sm border" 
+                                             style="max-height: 220px; width: 100%; object-fit: cover;">
+                                        <p class="x-small text-muted mt-2" id="preview-label">Showing current image</p>
+                                    </div>
+
+                                    <div class="input-group input-group-sm">
+                                        <input type="file" name="image" id="imageInput" 
+                                               class="form-control shadow-none border-0 bg-white" 
+                                               accept="image/*" onchange="updatePreview(event)">
+                                    </div>
+                                    <p class="small text-muted mt-3 mb-0" style="font-size: 0.75rem;">
+                                        Keep empty to retain the current image.
+                                    </p>
+                                </div>
+                                
+                                <% if (typeof errors !== 'undefined' && errors.image) { %>
+                                    <div class="text-danger small mt-1"><%= errors.image %></div>
+                                <% } %>
+                            </div>
+
+                            <div class="col-12 border-top pt-4 mt-4 d-flex justify-content-between align-items-center">
+                                <div class="text-muted small">
+                                    <i class="bi bi-info-circle me-1"></i> ID: <code class="bg-light px-2 rounded"><%= category._id %></code>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary px-5 py-2 fw-semibold shadow-sm">
+                                        Update Category
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function updatePreview(event) {
+        const preview = document.getElementById('imagePreview');
+        const label = document.getElementById('preview-label');
+        const file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                label.innerHTML = '<span class="text-primary fw-bold">New image selected</span>';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+<%- include('../partials/header') %>

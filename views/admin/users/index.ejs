@@ -1,0 +1,151 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small">
+                            <a href="/admin/dashboard" class="text-decoration-none text-muted">Console</a>
+                        </li>
+                        <li class="breadcrumb-item small active">Users</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Users List</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/admin/users/create" class="btn btn-primary btn-sm px-3 py-2 fw-semibold shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Add User
+                </a>
+            </div>
+        </header>
+
+        <div class="card border-0 shadow-sm" style="border-radius: 16px; overflow: hidden;">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0" style="background: white;">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Image</th>
+                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">Name</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Email</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Post Count</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Status</th>
+                            <th class="pe-4 py-3 text-muted small fw-bold text-uppercase text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (users.length> 0) { %>
+                            <% users.forEach(function(user){ %>
+                                <tr>
+                                    <td class="">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-3 border overflow-hidden shadow-sm d-flex align-items-center justify-content-center bg-light"
+                                                style="width: 50px; height: 50px;">
+
+                                                <% if (user.image && user.image !=='default-profile.png' ) { %>
+                                                    <img src="/<%= user.image %>" alt="<%= user.name %>"
+                                                        class="w-100 h-100 object-fit-cover">
+                                                    <% } else { %>
+                                                        <i class="bi bi-person-fill text-secondary"
+                                                            style="font-size: 32px;"></i>
+                                                        <% } %>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div>
+                                                <div class="fw-bold text-dark text-capitalize">
+                                                    <%= user.name %>
+                                                </div>
+                                                <div class="text-muted extra-small" style="font-size: 0.7rem;">ID: <%=
+                                                        user._id.toString().substring(0,8) %>...</div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-light text-dark border fw-medium px-2 py-1">
+                                            <%= user.email %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-3">
+                                            <%= user.postCount %> Posts
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill px-3 py-2"
+                                            style="background: <%= user.is_active ? 'green' : 'red' %>; color: white; font-weight: 600;"><%= user.is_active ? 'Active' : 'Inactive' %></span>
+                                    </td>
+
+                                    <td class="pe-4 text-end">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="/admin/users/<%= user._id %>/edit"
+                                                class="btn btn-sm btn-white border shadow-sm px-3" title="Edit Product">
+                                                <i class="bi bi-pencil-square text-primary"></i>
+                                            </a>
+
+                                            <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST"
+                                                onsubmit="return confirm('Remove this user from Database?');"
+                                                class="d-inline">
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-white border shadow-sm px-3">
+                                                    <i class="bi bi-trash3 text-danger"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5 text-muted">
+                                                <i class="bi bi-box-seam fs-1 d-block mb-2 opacity-50"></i>
+                                                No users found in your database.
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="card-footer bg-white py-4 border-0 px-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-0 small text-muted">Showing <strong>
+                            <%= users.length %>
+                        </strong> entries</p>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Previous -->
+                            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            <% for(let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                    <a class="page-link" href="?page=<%= i %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+
+                                    <!-- Next -->
+                                    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                                    </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>

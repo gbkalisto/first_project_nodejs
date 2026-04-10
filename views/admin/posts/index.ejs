@@ -1,0 +1,215 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="/admin/dashboard"
+                                class="text-decoration-none text-muted">Console</a></li>
+                        <li class="breadcrumb-item small active">Content</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Post Summary</h2>
+            </div>
+            <div>
+                <a href="/posts/create" class="btn btn-primary shadow-sm px-4 py-2 fw-bold">
+                    <i class="bi bi-plus-lg me-2"></i> Create New Post
+                </a>
+            </div>
+        </header>
+
+        <div class="card border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header bg-white border-0 p-4">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-4">
+                        <h5 class="fw-bold mb-0">Manage Articles</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <form action="">
+                            <div class="d-flex gap-2 justify-content-md-end">
+                                <div class="input-group input-group-sm w-50">
+                                    <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                                    <input type="search" name="search" class="form-control bg-light border-0"
+                                        placeholder="Search posts..." value="<%= search %>">
+                                </div>
+                                <button type="submit" class="btn btn-light btn-sm border text-muted"><i
+                                        class="bi bi-filter"></i></button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light-subtle border-bottom">
+                        <tr>
+                            <th class="px-4 py-3 border-0 small text-uppercase text-muted fw-bold">Article Details</th>
+                            <th class="py-3 border-0 small text-uppercase text-muted fw-bold">Preview</th>
+                            <th class="py-3 border-0 small text-uppercase text-muted fw-bold">Author</th>
+                            <th class="py-3 border-0 small text-uppercase text-muted fw-bold">Timeline</th>
+                            <th class="py-3 border-0 small text-uppercase text-muted fw-bold text-center">Status</th>
+                            <th class="px-4 py-3 border-0 small text-uppercase text-muted fw-bold text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-top-0">
+                        <% posts.forEach(function(post){ %>
+                            <tr>
+                                <td class="px-4 py-3">
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-dark text-truncate" style="max-width: 220px;">
+                                            <%= post.title %>
+                                        </span>
+                                        <code
+                                            class="x-small text-muted mt-1">#<%= post._id.toString().substring(18) %></code>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="text-muted small mb-0 text-truncate"
+                                        style="max-width: 250px; font-style: italic;">
+                                        "<%= post.body %>"
+                                    </p>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2 bg-light rounded-circle d-flex align-items-center justify-content-center border"
+                                            style="width: 30px; height: 30px;">
+                                            <i class="bi bi-person text-secondary"></i>
+                                        </div>
+                                        <span class="small fw-medium text-capitalize">
+                                            <%= post.author.name %>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small text-dark fw-semibold">
+                                        <%= post.publishedAt.toLocaleDateString('en-US', { month: 'short' ,
+                                            day: '2-digit' , year: 'numeric' }) %>
+                                    </div>
+                                    <div class="text-muted x-small">
+                                        <%= post.publishedAt.toLocaleTimeString('en-US', { hour: '2-digit' ,
+                                            minute: '2-digit' , hour12: true }) %>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <% if(post.isPublished) { %>
+                                        <span
+                                            class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Live
+                                        </span>
+                                        <% } else { %>
+                                            <span
+                                                class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2">
+                                                <i class="bi bi-pencil-square me-1"></i> Draft
+                                            </span>
+                                            <% } %>
+                                </td>
+                                <td class="px-4 text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-icon btn-light btn-sm rounded-circle border shadow-none"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2"
+                                            style="border-radius: 12px;">
+                                            <li>
+                                                <a class="dropdown-item rounded-2 py-2"
+                                                    href="/posts/edit/<%= post._id %>">
+                                                    <i class="bi bi-pencil me-2 text-primary"></i> Edit Post
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item rounded-2 py-2"
+                                                    href="/posts/view/<%= post._id %>">
+                                                    <i class="bi bi-eye me-2 text-info"></i> View Live
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                <form action="/posts/delete/<%= post._id %>?_method=DELETE"
+                                                    method="POST" onsubmit="return confirm('Archive this post?')">
+                                                    <button type="submit"
+                                                        class="dropdown-item rounded-2 py-2 text-danger">
+                                                        <i class="bi bi-trash3 me-2"></i> Move to Trash
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white py-4 border-0 px-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-0 small text-muted">Showing <strong>
+                            <%= posts.length %>
+                        </strong> entries</p>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Previous -->
+                            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            <% for(let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                    <a class="page-link" href="?page=<%= i %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+
+                                    <!-- Next -->
+                                    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                                    </li>
+
+                        </ul>
+                    </nav>
+                    <!-- <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled"><a class="page-link border-0 bg-transparent text-muted" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link border-0 shadow-sm rounded-circle mx-1 active" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link border-0 bg-transparent text-muted" href="#">Next</a></li>
+                    </ul>
+                </nav> -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .x-small {
+            font-size: 0.7rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table thead th {
+            letter-spacing: 0.05em;
+            font-size: 0.65rem;
+        }
+
+        .dropdown-item:active {
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-primary);
+        }
+    </style>
+
+    <%- include('../partials/footer') %>

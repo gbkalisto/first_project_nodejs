@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | User Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230d6efd' class='bi bi-stack' viewBox='0 0 16 16'><path d='m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z'/><path d='m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z'/></svg>">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0d6efd 0%, #003d99 100%);
+        }
+
+        body {
+            background: #f4f7f9;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .auth-side-panel {
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .form-floating>.form-control:focus~label,
+        .form-floating>.form-control:not(:placeholder-shown)~label {
+            color: #764ba2;
+        }
+
+        .preview-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+
+        #avatar-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #eee;
+            background: #fafafa;
+        }
+
+        .upload-btn-wrapper {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .btn-upload {
+            background: #fff;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 0.8rem;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card auth-card shadow-lg">
+                    <div class="row g-0">
+                        <div class="col-md-5 auth-side-panel d-none d-md-flex">
+                            <h2 class="fw-bold">Join Our Community</h2>
+                            <p class="opacity-75">Create an account to manage your profile, connect with others, and
+                                access exclusive dashboard features.</p>
+                            <div class="mt-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <span>Secure Data Encryption</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <span>Cloud Sync Enabled</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 p-4 p-lg-5">
+                            <div class="text-center mb-4">
+                                <h4 class="fw-bold">User Registration</h4>
+                                <p class="text-muted small">Please fill in the details below</p>
+                            </div>
+
+                            <form action="/register" method="POST" enctype="multipart/form-data">
+
+                                <div class="preview-container">
+                                    <img src="https://ui-avatars.com/api/?name=User&background=random"
+                                        id="avatar-preview" alt="Preview">
+                                    <div class="upload-btn-wrapper">
+                                        <label for="image_url" class="btn-upload">
+                                            <i class="bi bi-camera-fill text-primary"></i>
+                                        </label>
+                                        <input type="file" name="image" id="image_url" required class="d-none"
+                                            onchange="previewImage(event)" accept="image/*">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" name="name"
+                                                class="form-control <%= (typeof errors !== 'undefined' && errors.name) ? 'is-invalid' : '' %>"
+                                                id="name" placeholder="John Doe"
+                                                value="<%= (typeof oldData !== 'undefined') ? oldData.name : '' %>"
+                                                required>
+                                            <label for="name"><i class="bi bi-person me-2"></i>Full Name</label>
+                                            <% if (typeof errors !=='undefined' && errors.name) { %>
+                                                <div class="invalid-feedback">
+                                                    <%= errors.name %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mb-3">
+                                        <div class="form-floating">
+                                            <input type="email" name="email"
+                                                class="form-control <%= (typeof errors !== 'undefined' && errors.email) ? 'is-invalid' : '' %>"
+                                                id="email" placeholder="name@example.com"
+                                                value="<%= (typeof oldData !== 'undefined') ? oldData.email : '' %>"
+                                                required>
+                                            <label for="email"><i class="bi bi-envelope me-2"></i>Email Address</label>
+                                            <% if (typeof errors !=='undefined' && errors.email) { %>
+                                                <div class="invalid-feedback">
+                                                    <%= errors.email %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mb-4">
+                                        <div class="form-floating position-relative">
+                                            <input type="password" name="password"
+                                                class="form-control <%= (typeof errors !== 'undefined' && errors.password) ? 'is-invalid' : '' %>"
+                                                id="password" placeholder="Password" required>
+                                            <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+                                            <span
+                                                class="position-absolute end-0 top-50 translate-middle-y me-3 cursor-pointer"
+                                                onclick="togglePassword()">
+                                                <i class="bi bi-eye text-muted" id="toggleIcon"></i>
+                                            </span>
+                                            <% if (typeof errors !=='undefined' && errors.password) { %>
+                                                <div class="invalid-feedback">
+                                                    <%= errors.password %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-submit w-100 rounded-pill shadow-sm">
+                                    Create Account <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+
+                                <div class="text-center mt-4">
+                                    <p class="small text-muted">Already have an account? <a href="/login"
+                                            class="text-decoration-none fw-bold text-primary">Sign In</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Preview Image before upload
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('avatar-preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>

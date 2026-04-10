@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema({
+const AdminSchema = mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please enter user name"],
@@ -21,11 +21,7 @@ const UserSchema = mongoose.Schema({
     image: {
         type: String,
         default: "default-profile.png"
-    },
-    is_active: {
-        type: Boolean,
-        default: true
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Admin', AdminSchema);

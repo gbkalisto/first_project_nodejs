@@ -1,0 +1,67 @@
+<%- include('partials/header') %>
+    <div class="container py-5">
+
+        <div class="row align-items-center mb-5">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item"><a href="/dashboard" class="text-decoration-none small">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Overview</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold">Executive Summary</h2>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group">
+                    <button class="btn btn-white bg-white border custom-card px-3">Export CSV</button>
+                    <button class="btn btn-primary ms-2 shadow-sm">Generate Report</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card custom-card p-4 h-100">
+                    <span class="text-muted small fw-medium text-uppercase">Total Traffic</span>
+                    <div class="d-flex align-items-baseline mt-2">
+                        <h2 class="fw-bold mb-0">142.5k</h2>
+                        <span class="text-success small ms-2"><i class="bi bi-arrow-up"></i> 14%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card custom-card p-4 h-100 border-start border-primary border-4">
+                    <span class="text-muted small fw-medium text-uppercase">Conversion Rate</span>
+                    <div class="d-flex align-items-baseline mt-2">
+                        <h2 class="fw-bold mb-0">3.24%</h2>
+                        <span class="text-danger small ms-2"><i class="bi bi-arrow-down"></i> 2%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card custom-card p-4 h-100">
+                    <span class="text-muted small fw-medium text-uppercase">Avg. Session</span>
+                    <div class="d-flex align-items-baseline mt-2">
+                        <h2 class="fw-bold mb-0">04:12</h2>
+                        <span class="text-muted small ms-2">Stable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card custom-card p-5 text-center bg-white">
+                    <div class="py-5">
+                        <i class="bi bi-graph-up-arrow display-1 text-light mb-3"></i>
+                        <h4 class="text-muted">Analytics Workspace</h4>
+                        <p class="text-muted mx-auto" style="max-width: 400px;">Your detailed data will appear here once
+                            your projects are live. Start by creating a new project module.</p>
+                        <button class="btn btn-outline-primary mt-3">Connect Data Source</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('partials/footer') %>

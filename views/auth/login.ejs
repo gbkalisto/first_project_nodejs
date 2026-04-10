@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | User Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230d6efd' class='bi bi-stack' viewBox='0 0 16 16'><path d='m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z'/><path d='m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z'/></svg>">
+    <style>
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-card {
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%);
+            padding: 1rem 1rem;
+            text-align: center;
+            color: white;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            background-color: #fcfcfc;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+            border-color: #0d6efd;
+        }
+
+        .btn-login {
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            background: #0d6efd;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            z-index: 10;
+        }
+
+        .has-icon .form-control {
+            padding-left: 45px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-5">
+
+                <div class="card login-card mt-2">
+                    <div class="login-header">
+                        <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-shield-lock-fill text-primary fs-3"></i>
+                        </div>
+                        <h3 class="fw-bold mb-1">Welcome Back</h3>
+                        <p class="text-white-50 mb-0 small">Please enter your credentials to login</p>
+                    </div>
+
+                    <div class="card-body p-4 p-md-5 bg-white">
+                        <form action="/login" method="POST">
+
+                            <% if (typeof error !=='undefined' ) { %>
+                                <div class="alert alert-danger">
+                                    <%= error %>
+                                </div>
+                                <% } %>
+
+                                    <div class="mb-4">
+                                        <label for="email"
+                                            class="form-label small fw-bold text-muted text-uppercase">Email
+                                            Address</label>
+                                        <div class="position-relative has-icon">
+                                            <i class="bi bi-envelope input-icon"></i>
+                                            <input type="email" name="email"
+                                                class="form-control <%= (typeof errors !== 'undefined' && errors.email) ? 'is-invalid' : '' %>"
+                                                id="email" placeholder="name@example.com"
+                                                value="<%= (typeof oldData !== 'undefined') ? oldData.email : '' %>"
+                                                required>
+                                        </div>
+                                        <% if (typeof errors !=='undefined' && errors.email) { %>
+                                            <div class="invalid-feedback d-block mt-2">
+                                                <i class="bi bi-exclamation-circle me-1"></i>
+                                                <%= errors.email %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="password"
+                                                class="form-label small fw-bold text-muted text-uppercase">Password</label>
+                                            <a href="#" class="small text-decoration-none fw-semibold">Forgot?</a>
+                                        </div>
+                                        <div class="position-relative has-icon">
+                                            <i class="bi bi-key input-icon"></i>
+                                            <input type="password" name="password"
+                                                class="form-control <%= (typeof errors !== 'undefined' && errors.password) ? 'is-invalid' : '' %>"
+                                                id="password" placeholder="••••••••" required>
+                                        </div>
+                                        <% if (typeof errors !=='undefined' && errors.password) { %>
+                                            <div class="invalid-feedback d-block mt-2">
+                                                <i class="bi bi-exclamation-circle me-1"></i>
+                                                <%= errors.password %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+
+                                    <div class="mb-4 form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember">
+                                        <label class="form-check-label small text-muted" for="remember">Remember this
+                                            device</label>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-login shadow-sm">
+                                            Sign In <i class="bi bi-arrow-right-short ms-1"></i>
+                                        </button>
+                                    </div>
+                        </form>
+
+                        <div class="mt-5 text-center">
+                            <p class="small text-muted mb-0">Don't have an account?</p>
+                            <a href="/register" class="fw-bold text-decoration-none">Create an admin account</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<%- include('../partials/header') %>
+    <div class="container py-5">
+
+        <div class="row align-items-center mb-5">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item"><a href="/dashboard" class="text-decoration-none small">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Posts</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold">Post Summary</h2>
+            </div>
+
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card custom-card bg-white overflow-hidden">
+                    <div
+                        class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">Manage Posts</h5>
+                        <a href="/posts/create" class="btn btn-sm btn-primary rounded-pill px-3">
+                            <i class="bi bi-plus-circle me-1"></i> Add New
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-stripped table-hover align-middle mb-0">
+                            <thead class="bg-light text-muted small text-uppercase">
+                                <tr>
+                                    <th class="px-4 py-3 border-0">Title</th>
+                                    <th class="py-3 border-0">Body Preview</th>
+                                    <th class="py-3 border-0">Author</th>
+                                    <th class="py-3 border-0">Published At</th>
+                                    <th class="py-3 border-0 text-center">Status</th>
+                                    <th class="px-4 py-3 border-0 text-end">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border-top-0">
+                                <% posts.forEach(function(post){ %>
+
+                                    <tr>
+                                        <td class="px-4 py-3">
+                                            <span class="fw-semibold d-block text-truncate" style="max-width: 200px;">
+                                                <%= post.title %>
+                                            </span>
+                                            <small class="text-muted">ID: #<%= post._id %></small>
+                                        </td>
+                                        <td class="text-muted small">
+                                            <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                                                <%= post.body %>
+                                            </span>
+                                        </td>
+                                        <td class="text-muted small">
+                                            <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                                                <%= post.author.name %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="small fw-medium">
+                                                <%= post.publishedAt.toLocaleDateString('en-US', { month: 'short' ,
+                                                    day: '2-digit' , year: 'numeric' }) %>
+                                            </div>
+                                            <div class="text-muted smaller" style="font-size: 0.75rem;">
+                                                <%= post.publishedAt.toLocaleTimeString('en-US', { hour: '2-digit' ,
+                                                    minute: '2-digit' , hour12: true }) %>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span
+                                                class="badge bg-<%= post.isPublished == true ? 'success':'danger' %>-subtle text-<%= post.isPublished == true ? 'success':'danger' %> border border-<%= post.isPublished == true ? 'success':'danger' %>-subtle rounded-pill px-3 py-2">
+                                                <%= post.isPublished==true ? 'Published' :'Darft' %>
+                                            </span>
+                                        </td>
+                                        <td class="px-4 text-end">
+                                            <div class="dropdown">
+                                                <button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                    <li><a class="dropdown-item" href="/posts/edit/<%= post._id %>"><i
+                                                                class="bi bi-pencil me-2"></i>
+                                                            Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>
+                                                            View</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <form id="delete-form-<%= post._id %>"
+                                                            action="/posts/delete/<%= post._id %>?_method=DELETE"
+                                                            method="POST" style="display: none;">
+                                                        </form>
+
+                                                        <button class="dropdown-item text-danger"
+                                                            onclick="if(confirm('Are you sure?')) { document.getElementById('delete-form-<%= post._id %>').submit(); }">
+                                                            <i class="bi bi-trash me-2"></i> Delete
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- <div class="card-footer bg-white py-3 border-top-0 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Showing 2 of 48 posts</span>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item disabled"><a class="page-link border-0" href="#">Prev</a></li>
+                                    <li class="page-item active"><a class="page-link border-0 shadow-none"
+                                            href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link border-0" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link border-0" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <%- include('../partials/footer') %>

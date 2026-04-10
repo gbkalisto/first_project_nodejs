@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+    <div class="container py-5">
+
+        <div class="row align-items-center mb-5">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item"><a href="/dashboard" class="text-decoration-none small">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Posts</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold">Edit Post</h2>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group">
+                    <a href="/posts" class="btn btn-primary btn-sm ms-2 shadow-sm"> Backtrack</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-10">
+                <div class="card custom-card bg-white p-4 p-md-5">
+                    <div class="mb-4">
+                        <h4 class="fw-bold text-dark">Post Details</h4>
+                        <p class="text-muted small">Fill in the information below to create a new blog post.</p>
+                    </div>
+
+                    <form action="/posts/edit/<%= post._id %>?_method=PUT" method="POST" class="needs-validation">
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <label for="title" class="form-label fw-semibold small text-uppercase">Post
+                                    Title</label>
+                                <input type="text" class="form-control py-2 shadow-sm" id="title" name="title"
+                                    placeholder="e.g. Advanced Node.js Patterns" value="<%= post.title %>" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="slug" class="form-label fw-semibold small text-uppercase">Slug (URL)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted small">/post/</span>
+                                    <input type="text" class="form-control py-2 shadow-sm border-start-0" id="slug"
+                                        name="slug" placeholder="advanced-nodejs-patterns" value="<%= post.slug %>"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="publishedAt" class="form-label fw-semibold small text-uppercase">Publish
+                                    Date</label>
+                                <input type="date" class="form-control py-2 shadow-sm" id="publishedAt"
+                                    name="publishedAt" value="<%= post.publishedAt.toISOString().split('T')[0] %>" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="body" class="form-label fw-semibold small text-uppercase">Content
+                                    Body</label>
+                                <textarea class="form-control shadow-sm" id="body" name="body" rows="8"
+                                    placeholder="Write your post content here..."
+                                    required><%= post.body %></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox"  name="isPublished" id="isPublished"
+                                        <%= post.isPublished==true ? 'checked' :'' %>>
+                                    <label class="form-check-label fw-medium ms-2" for="isPublished">Make post public
+                                        immediately</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <hr class="text-muted opacity-25 mb-4">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/posts" class="btn btn-light px-4 py-2 fw-medium border">Cancel</a>
+                                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
+                                        <i class="bi bi-check2-circle me-2"></i>Update Post
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <%- include('../partials/footer') %>

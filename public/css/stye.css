@@ -1,0 +1,76 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* Glassmorphism Navbar */
+.navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.75rem 0;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #4b5563 !important;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    background-color: #f1f5f9;
+    color: #0d6efd !important;
+}
+
+.nav-link.active {
+    color: #0d6efd !important;
+    background-color: #eff6ff;
+}
+
+/* Card Customization */
+.custom-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.6rem 1.2rem;
+}
+
+.avatar-sm {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+/* Pulse Animation for Notifications */
+.pulse {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    cursor: pointer;
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}

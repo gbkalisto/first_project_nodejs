@@ -1,0 +1,146 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="/admin/dashboard"
+                                class="text-decoration-none text-muted">Console</a></li>
+                        <li class="breadcrumb-item small"><a href="/admin/users"
+                                class="text-decoration-none text-muted">Users</a></li>
+                        <li class="breadcrumb-item small active">New Account</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Register User</h2>
+            </div>
+            <div>
+                <a href="/admin/users" class="btn btn-white border bg-white shadow-sm btn-sm px-3 py-2 fw-semibold">
+                    <i class="bi bi-person-lines-fill me-1"></i> View All Users
+                </a>
+            </div>
+        </header>
+
+        <form action="/admin/users" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                        <div class="card-body p-4 p-md-5">
+                            <h5 class="fw-bold mb-4">Identity Details</h5>
+
+                            <div class="mb-4">
+                                <label for="name"
+                                    class="form-label small fw-bold  text-muted text-uppercase text-capitalize">Full
+                                    Name</label>
+                                <input type="text"
+                                    class="form-control form-control shadow-none <%= (typeof errors !== 'undefined' && errors.name) ? 'is-invalid' : '' %>"
+                                    name="name" id="name" placeholder="John Doe"
+                                    value="<%= (typeof oldData !== 'undefined') ? oldData.name : '' %>" required>
+                                <% if (typeof errors !=='undefined' && errors.name) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.name %>
+                                    </div>
+                                    <% } %>
+                            </div>
+
+                            <div class="mb-0">
+                                <label for="email" class="form-label fw-bold small  text-muted text-uppercase">Email
+                                    Address</label>
+                                <input type="email"
+                                    class="form-control form-control shadow-none <%= (typeof errors !== 'undefined' && errors.email) ? 'is-invalid' : '' %>"
+                                    name="email" id="email" placeholder="name@company.com"
+                                    value="<%= (typeof oldData !== 'undefined') ? oldData.email : '' %>" required>
+                                <% if (typeof errors !=='undefined' && errors.email) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.email %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                        <div class="card-body p-4 p-md-5">
+                            <h5 class="fw-bold mb-4">Security</h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="password" class="form-label fw-bold small text-muted text-uppercase">Initial
+                                        Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i
+                                                class="bi bi-shield-lock"></i></span>
+                                        <input type="password" name="password"
+                                            class="form-control form-control shadow-none border-start-0 <%= (typeof errors !== 'undefined' && errors.password) ? 'is-invalid' : '' %>"
+                                            id="password" placeholder="••••••••" required>
+                                        <% if (typeof errors !=='undefined' && errors.password) { %>
+                                            <div class="invalid-feedback">
+                                                <%= errors.password %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                    <div class="form-text mt-2 small text-muted"><small>User will be prompted to change this upon first login.</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4 text-dark text-center">Profile Photo</h5>
+
+                            <div class="text-center mb-4">
+                                <div class="position-relative d-inline-block">
+                                    <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center shadow-sm"
+                                        style="width: 150px; height: 150px; overflow: hidden;">
+                                        <img id="avatarPreview" src="/images/default-avatar.png"
+                                            class="w-100 h-100 object-fit-cover d-none">
+                                        <i id="avatarIcon" class="bi bi-person-bounding-box text-muted display-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="file" name="image" id="avatarInput"
+                                    class="form-control form-control-sm shadow-none border" accept="image/*"
+                                    onchange="previewAvatar(event)">
+                            </div>
+                            <p class="x-small text-muted text-center mb-0">Max size 2MB. JPG or PNG preferred.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success py-3 fw-bold shadow-sm">
+                            <i class="bi bi-person-check-fill me-2"></i> Create User Account
+                        </button>
+                        <button type="reset" class="btn btn-white border py-2 small fw-semibold">
+                            Clear Form
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function previewAvatar(event) {
+            const input = event.target;
+            const preview = document.getElementById('avatarPreview');
+            const icon = document.getElementById('avatarIcon');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    icon.classList.add('d-none');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,147 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="/admin/dashboard"
+                                class="text-decoration-none text-muted">Console</a></li>
+                        <li class="breadcrumb-item small"><a href="/admin/users"
+                                class="text-decoration-none text-muted">Users</a></li>
+                        <li class="breadcrumb-item small active">Account Settings</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Edit Profile</h2>
+            </div>
+            <div>
+                <a href="/admin/users" class="btn btn-white border bg-white shadow-sm btn-sm px-3 py-2 fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+        </header>
+
+        <form action="/admin/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                        <div class="card-body p-4 p-md-5">
+                            <h5 class="fw-bold mb-4">Personal Information</h5>
+
+                            <div class="mb-4">
+                                <label for="name" class="form-label small fw-bold text-muted text-uppercase">Full
+                                    Name</label>
+                                <input type="text" class="form-control form-control shadow-none" name="name" id="name"
+                                    value="<%= user.name %>" required>
+                            </div>
+
+                            <div class="mb-0">
+                                <label for="email" class="form-label small fw-bold text-muted text-uppercase">Email
+                                    Address</label>
+                                <input type="email" class="form-control form-control shadow-none" name="email"
+                                    id="email" value="<%= user.email %>" required>
+                            </div>
+
+                            <div class="mb-0 mt-4">
+                                <div class="form-check form-switch custom-switch">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                        <%=user.is_active ? 'checked' : '' %>>
+                                    <label class="form-check-label fw-semibold ms-2" for="is_active">
+                                        Enable User Visibility
+                                    </label>
+                                </div>
+                                <div class="form-text text-muted x-small ms-5">Disabled users won't logged in .</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="fw-bold mb-0">Security Update</h5>
+                                <span class="badge bg-light text-muted border fw-normal">Optional</span>
+                            </div>
+                            <div class="mb-0">
+                                <label for="password" class="form-label small fw-bold text-muted text-uppercase">New
+                                    Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i
+                                            class="bi bi-key"></i></span>
+                                    <input type="password" name="password"
+                                        class="form-control form-control shadow-none border-start-0" id="password"
+                                        placeholder="Leave blank to keep current password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                        <div class="card-body p-4 text-center">
+                            <h5 class="fw-bold mb-4 text-start">Profile Photo</h5>
+
+                            <div class="position-relative d-inline-block mb-4">
+                                <div class="rounded-circle border border-4 border-white shadow-sm overflow-hidden"
+                                    style="width: 160px; height: 160px;">
+                                    <img id="avatarPreview"
+                                        src="/<%= user.image ? user.image : 'images/default-avatar.png' %>"
+                                        class="w-100 h-100 object-fit-cover">
+                                </div>
+                                <label for="avatarInput"
+                                    class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle shadow">
+                                    <i class="bi bi-camera-fill"></i>
+                                </label>
+                            </div>
+
+                            <input type="file" name="image" id="avatarInput" class="d-none" accept="image/*"
+                                onchange="previewAvatar(event)">
+
+                            <div class="bg-light rounded-3 p-3 text-start mb-2">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small">Account ID:</span>
+                                    <span class="small fw-bold text-dark">
+                                        <%= user._id.toString().substring(18) %>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted small">Role:</span>
+                                    <span
+                                        class="badge bg-primary-subtle text-primary border-0 fw-bold">Administrator</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary py-3 fw-bold shadow-sm">
+                            <i class="bi bi-save2 me-2"></i> Update Account
+                        </button>
+                        <a href="/admin/users" class="btn btn-white border py-2 small fw-semibold">
+                            Discard Changes
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function previewAvatar(event) {
+            const input = event.target;
+            const preview = document.getElementById('avatarPreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+    <%- include('../partials/footer') %>
