@@ -13,6 +13,7 @@ exports.create = async (req, res) => {
 }
 
 exports.store = async (req, res) => {
+     console.log(req.body)
      let { name, description, is_active } = req.body
 
      const status = is_active === 'on' ? true : false;
@@ -119,11 +120,9 @@ exports.delete = async (req, res) => {
           return res.status(404).send("Category not found");
      }
 
-     // We need to point to './public/images/products/name.jpg'
-     let imagePath = path.join(__dirname, '..', 'public', category.image);
+     const imagePath = path.join(process.cwd(), 'public', category.image);
 
-     // Debugging: Add this line to see exactly where the code is looking!
-     console.log("Looking for file at:", imagePath);
+     console.log("Absolute Path:", imagePath);
 
      if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);

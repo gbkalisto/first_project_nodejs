@@ -110,10 +110,9 @@ exports.deleteProducts = async (req, res) => {
     }
 
     // We need to point to './public/images/products/name.jpg'
-    let imagePath = path.join(__dirname, '..', 'public', product.image);
+    const imagePath = path.join(process.cwd(), 'public', product.image);
 
-    // Debugging: Add this line to see exactly where the code is looking!
-    console.log("Looking for file at:", imagePath);
+    console.log("Absolute Path:", imagePath);
 
     if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
