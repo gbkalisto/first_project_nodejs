@@ -90,7 +90,7 @@ exports.updateProducts = async (req, res) => {
             price,
             stock,
             category,
-            image: dbImg // This will be either the old path OR the new path
+            image: dbImg 
         });
 
         res.redirect('/admin/products');
