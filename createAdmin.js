@@ -19,7 +19,6 @@ const createAdmin = async () => {
             console.log("Admin with this email already exists!");
             process.exit();
         }
-
         // 3. Hash the password manually
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
