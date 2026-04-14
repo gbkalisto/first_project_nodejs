@@ -47,15 +47,16 @@ exports.index = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    res.render('admin/posts/create')
+    const authors = await User.find({ is_active: true }).select('name id');
+    res.render('admin/posts/create', { authors, errors: null, oldData: null });
 }
 
 exports.store = async (req, res) => {
-    let { title, body, slug, publishedAt, isPublished } = req.body
-    const authorId = req.user.id;
+    let { author, title, body, slug, publishedAt, isPublished } = req.body
+    const authorId = author;
     const status = isPublished === 'on' ? true : false;
 
-    // ✅ Step 1: Base slug (from slug OR title)
+    //Base slug (from slug OR title)
     let baseSlug = slug || title;
 
     let generatedSlug = slugify(baseSlug, {
@@ -64,7 +65,7 @@ exports.store = async (req, res) => {
         trim: true
     });
 
-    // ✅ Step 2: Ensure uniqueness
+    // Ensure uniqueness
     let uniqueSlug = generatedSlug;
     let count = 1;
 
@@ -84,14 +85,15 @@ exports.store = async (req, res) => {
 }
 
 exports.edit = async (req, res) => {
+    const authors = await User.find({ is_active: true }).select('name id');
     let post = await postModel.findOne({ _id: req.params.id });
-    res.render('admin/posts/edit', { post })
+    res.render('admin/posts/edit', { post, authors, errors: null, oldData: null });
 }
 
 exports.update = async (req, res) => {
     try {
-        let { title, slug, body, publishedAt, isPublished } = req.body;
-
+        let { author, title, slug, body, publishedAt, isPublished } = req.body;
+        const authorId = author;
         const post = await postModel.findById(req.params.id);
         if (!post) return res.send("No post found!");
 
@@ -127,7 +129,8 @@ exports.update = async (req, res) => {
                 slug: uniqueSlug, // Use the verified unique slug
                 body,
                 publishedAt: publishedAt || Date.now(),
-                isPublished: status
+                isPublished: status,
+                author: authorId
             },
             { new: true }
         );

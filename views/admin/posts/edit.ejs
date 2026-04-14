@@ -1,0 +1,157 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="/admin/dashboard"
+                                class="text-decoration-none text-muted">Console</a></li>
+                        <li class="breadcrumb-item small"><a href="/admin/posts"
+                                class="text-decoration-none text-muted">Edit Post</a></li>
+                        <li class="breadcrumb-item small active">Edit</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Edit Post</h2>
+            </div>
+            <div>
+                <a href="/admin/posts" class="btn btn-white border bg-white shadow-sm btn-sm px-3 py-2 fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                    <div class="card-body p-4 p-md-5">
+
+                        <form action="/admin/posts/edit/<%= post._id %>?_method=PUT" method="POST">
+
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label for="author"
+                                        class="form-label fw-semibold small text-uppercase">Author</label>
+                                    <select name="author" id="author"
+                                        class="form-control py-2 shadow-sm <%= locals.errors?.author ? 'is-invalid' : '' %>">
+                                        <option value="">Select an author</option>
+                                        <% authors.forEach(author=> { %>
+                                            <option value="<%= author.id %>" <%=(locals.oldData?.author==author.id ||
+                                                (!locals.oldData && post.author==author.id)) ? 'selected' : '' %>>
+                                                <%= author.name %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                    <% if (locals.errors?.author) { %>
+                                        <div class="invalid-feedback">
+                                            <%= errors.author.msg %>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="title" class="form-label fw-semibold small text-uppercase">Post
+                                        Title</label>
+                                    <input type="text"
+                                        class="form-control py-2 shadow-sm <%= locals.errors?.title ? 'is-invalid' : '' %>"
+                                        id="title" name="title" value="<%= locals.oldData?.title || post.title %>">
+                                    <% if (locals.errors?.title) { %>
+                                        <div class="invalid-feedback">
+                                            <%= errors.title.msg %>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="slug" class="form-label fw-semibold small text-uppercase">Slug
+                                        (URL)</label>
+                                    <div class="input-group has-validation">
+                                        <span
+                                            class="input-group-text bg-light border-end-0 text-muted small">/post/</span>
+                                        <input type="text"
+                                            class="form-control py-2 shadow-sm border-start-0 <%= locals.errors?.slug ? 'is-invalid' : '' %>"
+                                            id="slug" name="slug" value="<%= locals.oldData?.slug || post.slug %>">
+                                        <% if (locals.errors?.slug) { %>
+                                            <div class="invalid-feedback">
+                                                <%= errors.slug.msg %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="publishedAt" class="form-label fw-semibold small text-uppercase">Publish
+                                        Date</label>
+                                    <input type="date"
+                                        class="form-control py-2 shadow-sm <%= locals.errors?.publishedAt ? 'is-invalid' : '' %>"
+                                        id="publishedAt" name="publishedAt"
+                                        value="<%= locals.oldData?.publishedAt || (post.publishedAt ? post.publishedAt.toISOString().split('T')[0] : '') %>">
+                                    <% if (locals.errors?.publishedAt) { %>
+                                        <div class="invalid-feedback">
+                                            <%= errors.publishedAt.msg %>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="body" class="form-label fw-semibold small text-uppercase">Content
+                                        Body</label>
+                                    <textarea
+                                        class="form-control shadow-sm <%= locals.errors?.body ? 'is-invalid' : '' %>"
+                                        id="body" name="body"
+                                        rows="8"><%= locals.oldData?.body || post.body %></textarea>
+                                    <% if (locals.errors?.body) { %>
+                                        <div class="invalid-feedback">
+                                            <%= errors.body.msg %>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-check form-switch mt-2">
+                                        <% 
+                                          let isChecked=locals.oldData ?
+                                            (locals.oldData.isPublished==='on' ) : post.isPublished; %>
+                                            <input class="form-check-input" type="checkbox" id="isPublished"
+                                                name="isPublished" <%=isChecked ? 'checked' : '' %>>
+                                            <label class="form-check-label fw-medium ms-2" for="isPublished">Make post
+                                                public immediately</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <hr class="text-muted opacity-25 mb-4">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/admin/posts"
+                                            class="btn btn-light px-4 py-2 fw-medium border">Cancel</a>
+                                        <button type="submit" class="btn btn-warning px-5 py-2 fw-bold shadow-sm">
+                                            <i class="bi bi-pencil-square me-2"></i>Update Post
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('preview-container');
+        const imagePreview = document.getElementById('image-preview');
+        const placeholder = document.getElementById('upload-placeholder');
+
+        imageInput.onchange = evt => {
+            const [file] = imageInput.files;
+            if (file) {
+                imagePreview.src = URL.createObjectURL(file);
+                previewContainer.classList.remove('d-none');
+                placeholder.classList.add('d-none');
+            }
+        }
+    </script>
+
+    <%- include('../partials/footer') %>

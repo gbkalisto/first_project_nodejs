@@ -11,7 +11,7 @@ exports.getAllProducts = async (req, res) => {
 }
 
 exports.createProducts = async (req, res) => {
-    let categories = await Category.find();
+    let categories = await Category.find({ is_active: true }).select('name id');
     res.render('admin/products/create', { categories });
 }
 
