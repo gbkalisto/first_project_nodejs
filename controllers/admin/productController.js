@@ -73,8 +73,7 @@ exports.updateProducts = async (req, res) => {
         // 2. Check if a new file was uploaded
         if (req.file) {
             // Delete the OLD image from the folder
-            // We use '..' to go up from the controllers folder to the root
-            let oldImagePath = path.join(__dirname, '..', 'public', product.image);
+            const oldImagePath = path.join(process.cwd(), 'public', product.image);
 
             if (fs.existsSync(oldImagePath)) {
                 fs.unlinkSync(oldImagePath);

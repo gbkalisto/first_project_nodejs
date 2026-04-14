@@ -66,7 +66,7 @@ exports.update = async (req, res) => {
 
           if (req.file) {
                // Fix: Ensure pathing is robust
-               let oldImagePath = path.join(__dirname, '..', 'public', category.image);
+               let oldImagePath = path.join(process.cwd(), 'public', category.image);
 
                if (fs.existsSync(oldImagePath)) {
                     fs.unlinkSync(oldImagePath);
