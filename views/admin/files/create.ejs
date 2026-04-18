@@ -1,0 +1,163 @@
+<%- include('../partials/header') %>
+
+    <style>
+        .upload-box {
+            border: 2px dashed #dee2e6;
+            border-radius: 15px;
+            min-height: 350px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .upload-box:hover {
+            border-color: var(--bs-primary);
+            background-color: #fff;
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: #eef2ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .object-fit-cover {
+            object-fit: cover;
+        }
+
+        /* Change Image Overlay on Hover */
+        .change-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .upload-box:hover .change-overlay {
+            opacity: 1;
+        }
+
+        .preview-container {
+            z-index: 5;
+        }
+    </style>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small"><a href="/admin/dashboard"
+                                class="text-decoration-none text-muted">Console</a></li>
+                        <li class="breadcrumb-item small"><a href="/admin/media"
+                                class="text-decoration-none text-muted">Media</a></li>
+                        <li class="breadcrumb-item small active">Upload</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Upload Media</h2>
+            </div>
+            <div>
+                <a href="/admin/media" class="btn btn-light border shadow-sm px-4 py-2 fw-bold">
+                    <i class="bi bi-arrow-left me-2"></i> Back to Gallery
+                </a>
+            </div>
+        </header>
+        <%- include('../partials/flashmsg') %>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm" style="border-radius: 20px;">
+                        <div class="card-body p-5">
+                            <form action="/admin/media" method="POST" enctype="multipart/form-data" id="uploadForm">
+
+                                <div class="upload-container mb-4">
+                                    <label for="imageUpload"
+                                        class="upload-box d-flex flex-column align-items-center justify-content-center w-100"
+                                        id="dropArea">
+                                        <div class="preview-container d-none w-100 h-100 position-absolute">
+                                            <img id="imagePreview" src="#" alt="Preview"
+                                                class="w-100 h-100 object-fit-cover" style="border-radius: 15px;">
+                                            <div
+                                                class="change-overlay d-flex align-items-center justify-content-center">
+                                                <span class="btn btn-light btn-sm fw-bold">Change Image</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="upload-placeholder text-center p-5" id="placeholder">
+                                            <div class="icon-circle mb-3 mx-auto">
+                                                <i class="bi bi-cloud-arrow-up fs-2 text-primary"></i>
+                                            </div>
+                                            <h5 class="fw-bold">Click to upload or drag and drop</h5>
+                                            <p class="text-muted small">PNG, JPG or JPEG (max. 5MB)</p>
+                                        </div>
+
+                                        <input type="file" name="image" id="imageUpload" class="d-none"
+                                            accept="image/*">
+                                    </label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold py-3"
+                                        style="border-radius: 12px;">
+                                        <i class="bi bi-upload me-2"></i> Start Upload
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('placeholder');
+        const previewContainer = document.querySelector('.preview-container');
+
+        imageUpload.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.setAttribute('src', e.target.result);
+                    placeholder.classList.add('d-none');
+                    previewContainer.classList.remove('d-none');
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Simple Drag and Drop visual feedback
+        const dropArea = document.getElementById('dropArea');
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, e => {
+                e.preventDefault();
+                dropArea.style.borderColor = '#0d6efd';
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, e => {
+                e.preventDefault();
+                dropArea.style.borderColor = '#dee2e6';
+            }, false);
+        });
+    </script>
+
+    <%- include('../partials/footer') %>

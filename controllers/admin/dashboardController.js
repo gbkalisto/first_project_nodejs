@@ -3,6 +3,7 @@ const User = require('../../models/user');
 const Product = require('../../models/product');
 const Category = require('../../models/category');
 const Post = require('../../models/post');
+const Project = require('../../models/Project');
 const path = require('path')
 const fs = require('fs')
 const bcrypt = require('bcrypt')
@@ -11,11 +12,12 @@ const jwt = require('jsonwebtoken')
 exports.dashboard = async (req, res) => {
     try {
         // Execute all counts in parallel for better performance
-        const [userCount, productCount, categoryCount, postCount] = await Promise.all([
+        const [userCount, productCount, categoryCount, postCount,projectCount] = await Promise.all([
             User.countDocuments(),
             Product.countDocuments(),
             Category.countDocuments(),
-            Post.countDocuments()
+            Post.countDocuments(),
+            Project.countDocuments(),
         ]);
 
         res.render('admin/dashboard', {
@@ -24,6 +26,7 @@ exports.dashboard = async (req, res) => {
                 products: productCount,
                 categories: categoryCount,
                 posts: postCount,
+                projects: projectCount,
             }
         });
     } catch (error) {

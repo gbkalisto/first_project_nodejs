@@ -1,0 +1,119 @@
+<%- include('../partials/header') %>
+
+    <main class="main-content">
+        <header class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item small">
+                            <a href="/admin/dashboard" class="text-decoration-none text-muted">Console</a>
+                        </li>
+                        <li class="breadcrumb-item small active">Projects</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold tracking-tight">Projects Inventory</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/admin/projects/create" class="btn btn-primary btn-sm px-3 py-2 fw-semibold shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Add Project
+                </a>
+            </div>
+        </header>
+
+        <div class="card border-0 shadow-sm" style="border-radius: 16px; overflow: hidden;">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0" style="background: white;">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">Cover Image</th>
+                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">Title</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Description</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Project Url</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Tech Stack</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Status</th>
+                            <th class="pe-4 py-3 text-muted small fw-bold text-uppercase text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (projects.length> 0) { %>
+                            <% projects.forEach(function(project){ %>
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-3 border overflow-hidden shadow-sm"
+                                                style="width: 50px; height: 50px;">
+                                                <img src="/<%= project.coverImage %>" alt="<%= project.title %>"
+                                                    class="w-100 h-100 object-fit-cover">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark px-2 py-1">
+                                            <%= project.title %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark px-2 py-1 description d-webkit-box overflow-hidden" style="-webkit-line-clamp: 3; -webkit-box-orient: vertical; display: -webkit-box;" >
+                                            <%= project.description %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-primary"><a href="<%= project.liveUrl %>" target="_blank">
+                                                LiveUrl
+                                            </a></span>
+                                    </td>
+                                    <td class="pe-4 text-start">
+                                        <% if(project.techStack && project.techStack.length> 0) { %>
+                                            <% project.techStack.forEach(function(stack) { %>
+                                                <span class="badge bg-light text-dark border me-1">
+                                                    <%= stack %>
+                                                </span>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <span class="text-muted small">No stack specified</span>
+                                            <% } %>
+                                    </td>
+                                    <td class="pe-4 text-start">
+                                        <% if(project.is_active) { %>
+                                            <span class="badge rounded-pill px-3 py-2"
+                                                style="background: #dcfce7; color: #166534; font-weight: 600;">Active</span>
+                                            <% } else { %>
+                                                <span class="badge rounded-pill px-3 py-2"
+                                                    style="background: #fee2e2; color: #991b1b; font-weight: 600;">Inactive</span>
+                                                <% } %>
+                                    </td>
+                                    <td class="pe-4 text-end">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="/admin/projects/<%= project._id %>/edit"
+                                                class="btn btn-sm btn-white border shadow-sm px-3" title="Edit project">
+                                                <i class="bi bi-pencil-square text-primary"></i>
+                                            </a>
+
+                                            <form action="/admin/projects/<%= project._id %>?_method=DELETE"
+                                                method="POST"
+                                                onsubmit="return confirm('Remove this project from inventory?');"
+                                                class="d-inline">
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-white border shadow-sm px-3">
+                                                    <i class="bi bi-trash3 text-danger"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5 text-muted">
+                                                <i class="bi bi-box-seam fs-1 d-block mb-2 opacity-50"></i>
+                                                No projects found in your inventory.
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>

@@ -16,9 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const { isLoggedIn } = require('./middlewares/authMiddleware');
 const { isAdminLoggedIn } = require('./middlewares/adminAuthMiddleware');
+const { setAuthContext } = require('./middlewares/authContext');
 
 const loginRoute = require('./routes/loginRoute')
 const userRoute = require('./routes/userRoutes');
@@ -30,8 +33,10 @@ const profieRoute = require('./routes/profileRoute');
 
 
 
+
 const authApiRoutes = require('./routes/api/authRoutes');
 const postApiRoutes = require('./routes/api/postRoutes');
+const fileUploadRoutes = require('./routes/api/fileUploadRoutes');
 
 
 const adminLoginRoutes = require('./routes/admin/adminLoginRoute');
@@ -40,9 +45,36 @@ const categoryRoute = require('./routes/admin/categoryRoute');
 const productRoute = require('./routes/admin/productRoute');
 const usersRoute = require('./routes/admin/userRoute');
 const postsRoute = require('./routes/admin/postRoute');
+const projectsRoute = require('./routes/admin/projectRoute');
+const fileUploadRoute = require('./routes/admin/fileUploadRoute');
+
+app.use(setAuthContext);
+
+
+
+// 1. Session Config
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'secret_key', // Use .env in production
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 } // Session lasts 1 minute for flash messages
+}));
+
+// 2. Flash Config
+app.use(flash());
+
+// 3. Global Variables Middleware
+// This makes "success" and "error" available in every EJS file automatically
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 
 
 app.get('/', homepageRoute);
+
 
 app.use('/register', userRoute);
 app.use('/login', loginRoute);
@@ -66,7 +98,9 @@ app.use('/admin', isAdminLoggedIn, [
     categoryRoute,
     productRoute,
     usersRoute,
-    postsRoute
+    postsRoute,
+    projectsRoute,
+    fileUploadRoute
 ]);
 
 
@@ -74,6 +108,7 @@ app.use('/admin', isAdminLoggedIn, [
 
 app.use('/api/v1/auth', authApiRoutes);
 app.use('/api/v1/posts', postApiRoutes);
+app.use('/api/v1/file-upload', fileUploadRoutes);
 
 
 

@@ -5,7 +5,7 @@ exports.isLoggedIn = (req, res, next) => {
         const token = req.cookies.token;
 
         if (!token) {
-            return res.status(401).redirect('/login');
+            return res.status(401).redirect('/login'); // send them either home page or login page
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

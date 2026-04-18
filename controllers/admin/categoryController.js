@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 }
 
 exports.store = async (req, res) => {
-     console.log(req.body)
+     //console.log(req.body)
      let { name, description, is_active } = req.body
 
      const status = is_active === 'on' ? true : false;
@@ -41,7 +41,7 @@ exports.store = async (req, res) => {
           description,
           is_active: status,
      })
-
+     req.flash('success', 'Category created successfully');
      res.redirect('/admin/categories')
 }
 
@@ -58,7 +58,9 @@ exports.update = async (req, res) => {
           const status = is_active === 'on' ? true : false;
 
           if (!category) {
-               return res.status(404).send("Category not found");
+               req.flash('error', 'Category not found');
+               // return res.status(404).send("Category not found");
+               return res.redirect('/admin/category/edit');
           }
 
           // Handle Image Update
@@ -104,11 +106,13 @@ exports.update = async (req, res) => {
                is_active: status,
                image: dbImg
           });
-
+          req.flash('success', 'Category successfully updated.');
           res.redirect('/admin/categories');
      } catch (error) {
-          console.error("Update Error:", error); // Log the actual error for debugging
-          res.status(500).send("Error updating category");
+          console.error("Update Error:", error);
+          req.flash('error', error.message());
+          // return res.redirect('back'); // Redirects back to the form
+          // res.status(500).send("Error updating category");
      }
 };
 
@@ -132,5 +136,6 @@ exports.delete = async (req, res) => {
      }
 
      await Category.findByIdAndDelete(req.params.id);
+     req.flash('success', 'Category successfully deleted.');
      res.redirect('/admin/categories');
 }
